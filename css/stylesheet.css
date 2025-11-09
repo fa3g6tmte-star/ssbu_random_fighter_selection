@@ -43,32 +43,7 @@
     margin-top: 5px;
     color: #333;
   }
-  
-  .exportImportState {
-    display: flex;
-    align-items: center;   /* 縦中央揃え */
-    justify-content: center; /* 横方向中央揃え */
-    gap: 5px;              /* 要素間の間隔 */
-    margin: 10px 0;        /* 上下の余白 */
-}
 
-.exportImportState button {
-    border: grey 0.5px solid;  /* おまかせボタンと同じ枠 */
-    padding: 1px 5px;
-    font-size: 14px;
-    height: 24px;
-    background-color: white;
-    cursor: pointer;
-}
-
-.exportImportState textarea {
-    width: 150px;          /* テキストボックスの幅 */
-    height: 24px;
-    font-size: 12px;
-    resize: none;          /* サイズ変更不可 */
-    padding: 2px;
-}
-  
   /* button */
   .radio {
     margin: 5px auto;
