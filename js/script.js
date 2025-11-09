@@ -1,4 +1,4 @@
-// 厳密なエラーチェック
+く/ 厳密なエラーチェック
 "use strict";
 
 import { fighters, displayNameEn, displayNameJp } from "./fighter.js";
@@ -355,28 +355,27 @@ const updateRemainingCount = () => {
     usedCountDisplay.textContent = `残りキャラ数：${remaining} / ${numFighters}`;
 };
 
-// エクスポートボタン
-document.getElementById("exportButton").addEventListener("click", () => {
-    const fighters = document.querySelectorAll(".fighterBox");
-    const state = [];
+import { fighters } from './fighter.js';
 
-    fighters.forEach(f => {
-        state.push({
-            id: f.dataset.id,                // キャラ識別用ID
-            clicked: f.classList.contains("clicked"),
-            used: f.classList.contains("used")
-        });
+// エクスポート
+document.getElementById("exportButton").addEventListener("click", () => {
+    const state = fighters.map(fighter => {
+        const el = document.querySelector(`.fighterBox[data-id='${fighter}']`);
+        if (!el) return 0; // 対象
+        if (el.classList.contains("clicked")) return 1; // 除外
+        if (el.classList.contains("used")) return 2; // 使用済み
+        return 0; // 対象
     });
 
     const jsonStr = JSON.stringify(state);
     navigator.clipboard.writeText(jsonStr).then(() => {
-        alert("コピーしました！");
+        alert("コピーしました");
     }).catch(() => {
         alert("コピーに失敗しました");
     });
 });
 
-// インポートボタン
+// インポート
 document.getElementById("importButton").addEventListener("click", () => {
     const jsonStr = document.getElementById("importTextarea").value;
     if (!jsonStr) return alert("テキストが空です");
@@ -384,25 +383,22 @@ document.getElementById("importButton").addEventListener("click", () => {
     let state;
     try {
         state = JSON.parse(jsonStr);
+        if (!Array.isArray(state) || state.length !== fighters.length) throw "不正な形式";
     } catch (e) {
         return alert("JSON形式が不正です");
     }
 
-    const fighters = document.querySelectorAll(".fighterBox");
-    fighters.forEach(f => {
-        const s = state.find(x => x.id === f.dataset.id);
-        if (s) {
-            f.classList.toggle("clicked", s.clicked);
-            f.classList.toggle("used", s.used);
-        } else {
-            // stateにない場合はリセット
-            f.classList.remove("clicked", "used");
-        }
+    fighters.forEach((fighter, i) => {
+        const el = document.querySelector(`.fighterBox[data-id='${fighter}']`);
+        if (!el) return;
+
+        el.classList.remove("clicked", "used");
+        if (state[i] === 1) el.classList.add("clicked");
+        if (state[i] === 2) el.classList.add("used");
     });
 
-    alert("状態を反映しました");
+    alert("インポートしました");
 });
-
 
 // cookieの追加や削除の関数
 const setCookie = () => {
