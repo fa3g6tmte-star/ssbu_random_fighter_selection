@@ -168,7 +168,13 @@ const displayNameEn = [
     "hero",
     "banjo & kazooie",
     "terry",
-    "byleth"
+    "byleth",
+    "men",
+    "Homura",
+    "Sephiroth",
+    "Kazuya",
+    "Steve",
+    "Sora"
 ]
 
 
@@ -252,7 +258,13 @@ const displayNameJp = [
     "勇者",
     "バンジョー&カズーイ",
     "テリー",
-    "ベレト/べレス"
+    "ベレト/べレス",
+    "ミェンミェン",
+    "ホムラ/ヒカリ",
+    "セフィロス",
+    "カズヤ",
+    "スティーブ",
+    "ソラ"
 ]
 
 
