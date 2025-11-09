@@ -165,21 +165,19 @@ const getCookie = () => {
 // おまかせボタン
 randomButton.addEventListener("click", () => {
     const selectedFighters = [];
-    while (resultList.firstChild) resultList.removeChild(resultList.firstChild);
+    const result = document.getElementById("resultList");
+    while (result.firstChild) result.removeChild(result.firstChild);
 
     const radioButton = document.getElementsByName("radio");
     let numSelectedFighters = 1;
     for (let i = 0; i < radioButton.length; i++) {
-        if (radioButton[i].checked) {
-            numSelectedFighters = Number(radioButton[i].value);
-            break;
-        }
+        if (radioButton[i].checked) numSelectedFighters = Number(radioButton[i].value);
     }
 
     const union = new Set([...bannedFighters, ...usedFighters]);
     const numAvailable = useHistory ? numFighters - union.size : numFighters - bannedFighters.size;
     if (numAvailable < numSelectedFighters) {
-        alert(`選択可能なキャラが足りません`);
+        alert("選択可能なキャラが足りません");
         return;
     }
 
@@ -189,15 +187,21 @@ randomButton.addEventListener("click", () => {
         if (selectedFighters.includes(i)) continue;
         if (bannedFighters.has(i) || (useHistory && usedFighters.has(i))) continue;
 
-        // 結果表示には候補リストをコピー
+        // 結果欄用のボックス（色なし）
         const fighterBox = makeFighterBox(i);
-        fighterBox.classList.add("used"); // 結果だけ青にする
         frag.appendChild(fighterBox);
 
         selectedFighters.push(i);
-        usedFighters.add(i); // 履歴に追加するだけで候補リストには class 付けない
+
+        // 候補リストの使用済みを更新
+        usedFighters.add(i);
+        if (useHistory) {
+            const candidateBox = fighterBoxes[i].querySelector(".imgBox");
+            candidateBox.classList.add("used"); // 候補リストだけ青
+        }
     }
-    resultList.appendChild(frag);
+
+    result.appendChild(frag);
     setCookie();
 });
 
