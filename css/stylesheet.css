@@ -44,7 +44,7 @@
     color: #333;
   }
   
-.exportImportState {
+  .exportImportState {
     display: flex;
     align-items: center;   /* 縦中央揃え */
     justify-content: center; /* 横方向中央揃え */
@@ -64,7 +64,10 @@
 .exportImportState textarea {
     width: 150px;          /* テキストボックスの幅 */
     height: 24px;
-    font-size
+    font-size: 12px;
+    resize: none;          /* サイズ変更不可 */
+    padding: 2px;
+}
   
   /* button */
   .radio {
