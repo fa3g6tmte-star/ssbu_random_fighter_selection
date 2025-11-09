@@ -88,6 +88,7 @@ window.addEventListener("DOMContentLoaded", () => {
                 fighterBox.classList.add("clicked");
                 bannedFighters.add(i);
             }
+            updateRemainingCount();
         });
 
         li.appendChild(fighterBox);
@@ -99,6 +100,8 @@ window.addEventListener("DOMContentLoaded", () => {
     candidate.appendChild(frag);
 
     getCookie();
+    
+    updateRemainingCount();
 })
 
 // キャラが選択できない時にアラートを出す．
@@ -252,6 +255,7 @@ const checkIfUseHistory = () => {
             removeUsedClass(i);
         }
     }
+    updateRemainingCount();
 }
 
 // i番目のキャラクターをbanする関数
@@ -294,6 +298,7 @@ const banAllFighters = () => {
     for (let i = 0; i < numFighters; i++) {
         banIthFighter(i);
     }
+    updateRemainingCount();
 }
 
 // 全てのキャラクターをunbanする
@@ -301,6 +306,7 @@ const unbanAllFighters = () => {
     for (let i = 0; i < numFighters; i++) {
         unbanIthFighter(i);
     }
+    updateRemainingCount();
 }
 
 // historyを削除する
@@ -336,6 +342,18 @@ const reset = () => {
         }
     }
 }
+// 残りキャラ数の表示を更新する関数
+const updateRemainingCount = () => {
+    const usedCountDisplay = document.getElementById("usedCountDisplay");
+
+    // 履歴を使う場合は使用済キャラも除外する
+    const totalExcluded = useHistory
+        ? bannedFighters.size + usedFighters.size
+        : bannedFighters.size;
+
+    const remaining = numFighters - totalExcluded;
+    usedCountDisplay.textContent = `残りキャラ数：${remaining} / ${numFighters}`;
+};
 
 // cookieの追加や削除の関数
 const setCookie = () => {
