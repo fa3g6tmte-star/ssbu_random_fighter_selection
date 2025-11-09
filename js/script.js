@@ -58,6 +58,10 @@ const makeFighterBox = (i) => {
     fighterBox.appendChild(imgDiv)
     fighterBox.appendChild(p);
     fighterBox.classList.add("fighterBox");
+    
+    if (i !== -1) {
+        fighterBox.dataset.id = fighters[i];
+    }
 
     return fighterBox
 }
