@@ -44,21 +44,25 @@
     color: #333;
   }
   
-  /* 左右に並べる */
-  .exportImportState {
+.exportImportState {
     display: flex;
-    justify-content: flex-end; /* 右端に寄せる */
-    gap: 5px; /* ボタンとテキストの間隔 */
-  }
-  
-  /* テキストエリアを小さく、ボタンと同じくらいに */
-  .exportImportState textarea {
-    width: 120px;
+    align-items: center;   /* ボタンとテキストエリアを縦中央揃え */
+    gap: 5px;              /* 各要素の間隔 */
+    justify-content: flex-end; /* 右端に寄せたい場合 */
+}
+
+.exportImportState button {
     height: 24px;
     font-size: 12px;
-    margin: 0; /* 上下の余白を削除 */
-    display: inline-block;
-  }
+    padding: 0 6px;
+}
+
+.exportImportState textarea {
+    width: 150px;          /* 好きな幅に調整可能 */
+    height: 24px;
+    font-size: 12px;
+    resize: none;          /* サイズ変更不可 */
+}
   
   /* button */
   .radio {
