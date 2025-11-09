@@ -62,6 +62,24 @@
                 </p>
                 <p id="usedCountDisplay">残りキャラ数：0 / 0</p>
             </div>
+            <p id="usedCountDisplay">残りキャラ数：0 / 0</p>
+
+            <!-- 状態のエクスポート/インポート -->
+            <div class="exportImportState">
+                <h2>状態のコピー / 読み込み</h2>
+                <!-- エクスポート -->
+                <p class="button">
+                    <button type="button" id="exportButton">コピー用に出力</button>
+                </p>
+                <textarea id="exportTextarea" rows="5" cols="40" readonly placeholder="ここにコピー用テキストが表示されます"></textarea>
+                <!-- インポート -->
+                <p class="button">
+                    <button type="button" id="importButton">貼り付けて読み込む</button>
+                </p>
+                <textarea id="importTextarea" rows="5" cols="40" placeholder="ここにコピーしたテキストを貼り付けてください"></textarea>
+            </div>
+
+
 
             <!-- リザルトボックス -->
             <div class="result" id="result">
