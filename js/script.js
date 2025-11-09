@@ -1,6 +1,3 @@
-
-
-く/ 厳密なエラーチェック
 "use strict";
 
 import { fighters, displayNameEn, displayNameJp } from "./fighter.js";
@@ -14,78 +11,42 @@ let useHistory = false;
 // buttonがクリックされた時にキャラクターを選ぶ
 const randomButton = document.getElementById("randomButton");
 
-// キャラクタボックスの配列
+// キャラクタボックスの配列（候補リスト用）
 const fighterBoxes = [];
 
 // cookieの保存期間．1週間
 const maxAge = 604800;
 
 // ファイル名を取得
-const getFileName = () => {
-    return window.location.href.split("/").pop();
-}
+const getFileName = () => window.location.href.split("/").pop();
 
 // i番目のキャラクターボックスを作成
-// i=-1のときを含まない場合は空のキャラクタボックスを作成
-const makeFighterBox = (i) => {
-    // 全体
+// resultsOnly: true なら候補リスト用ではなく結果欄用
+const makeFighterBox = (i, resultsOnly = false) => {
     const fighterBox = document.createElement("div");
-
-    // 画像をいれる
     const imgDiv = document.createElement("div");
+    imgDiv.classList.add("imgBox");
 
-    // 空のボックスを作る場合はここは処理しない
     if (i !== -1) {
         const img = document.createElement("img");
-        // 画像のパス
         img.src = "./icon_imgs/" + fighters[i] + ".png";
-        // 画像を追加
         imgDiv.appendChild(img);
     }
 
-    // クラスの付与
-    imgDiv.classList.add("imgBox")
-
-    // fighter名の追加
     const p = document.createElement("p");
     if (i !== -1) {
-        if (getFileName() === "index_en.html") {
-            p.textContent = displayNameEn[i].toUpperCase();
-        } else {
-            p.textContent = displayNameJp[i];
-        }
+        p.textContent = getFileName() === "index_en.html" ? displayNameEn[i].toUpperCase() : displayNameJp[i];
     }
     p.classList.add("nameBox");
 
-    fighterBox.appendChild(imgDiv)
+    fighterBox.appendChild(imgDiv);
     fighterBox.appendChild(p);
     fighterBox.classList.add("fighterBox");
-    
-    if (i !== -1) {
-        fighterBox.dataset.id = fighters[i];
-    }
 
-    return fighterBox
-}
+    if (i !== -1) fighterBox.dataset.id = fighters[i];
 
-// 初期化
-window.addEventListener("DOMContentLoaded", () => {
-    const frag = document.createDocumentFragment();
-    for (let i = -1; i < numFighters; i++) {
-        // 結果の一覧に追加 (レイアウト維持のため)
-        if (i === -1) {
-            const result = document.getElementById("resultList");
-            const li = document.createElement("li");
-            const fighterBox = makeFighterBox(-1);
-            li.appendChild(fighterBox);
-            result.appendChild(li);
-            continue;
-        }
-        const li = document.createElement("li");
-
-        const fighterBox = makeFighterBox(i);
-
-        // クリックしたら色をつける
+    // 結果欄用ならクリックイベントなし
+    if (!resultsOnly && i !== -1) {
         fighterBox.addEventListener("click", () => {
             if (fighterBox.classList.contains("clicked")) {
                 fighterBox.classList.remove("clicked");
@@ -96,37 +57,44 @@ window.addEventListener("DOMContentLoaded", () => {
             }
             updateRemainingCount();
         });
+    }
 
+    return fighterBox;
+};
+
+// 初期化
+window.addEventListener("DOMContentLoaded", () => {
+    const frag = document.createDocumentFragment();
+    for (let i = -1; i < numFighters; i++) {
+        if (i === -1) {
+            const result = document.getElementById("resultList");
+            const li = document.createElement("li");
+            li.appendChild(makeFighterBox(-1, true));
+            result.appendChild(li);
+            continue;
+        }
+
+        const li = document.createElement("li");
+        const fighterBox = makeFighterBox(i);
         li.appendChild(fighterBox);
         fighterBoxes.push(fighterBox);
-
-        // document fragment に一時的に保存
         frag.appendChild(li);
     }
     candidate.appendChild(frag);
 
     getCookie();
-    
     updateRemainingCount();
-})
+});
 
-// キャラが選択できない時にアラートを出す．
+// キャラが選択できない時にアラート
 const alertWhenUnavaliable = (numSelectedFighters, numAvailable) => {
     const numUnavailable = numSelectedFighters - numAvailable;
     const fileName = getFileName();
     if (fileName === "index_en.html") {
         if (useHistory) {
-            if (numUnavailable === 1) {
-                alert(`You have to unban at least 1 fighter or reset your history.`);
-            } else {
-                alert(`You have to unban at least ${numUnavailable} fighters or reset your history.`);
-            }
+            alert(`You have to unban at least ${numUnavailable} fighter(s) or reset your history.`);
         } else {
-            if (numUnavailable === 1) {
-                alert(`You have to unban at least 1 fighter.`);
-            } else {
-                alert(`You have to unban at least ${numUnavailable} fighters.`);
-            }
+            alert(`You have to unban at least ${numUnavailable} fighter(s).`);
         }
     } else {
         if (useHistory) {
@@ -135,331 +103,171 @@ const alertWhenUnavaliable = (numSelectedFighters, numAvailable) => {
             alert(`少なくとも${numUnavailable}キャラ以上を使えるようにしてください。`);
         }
     }
-}
+};
 
-// おまかせボタンが押されたときのイベントを作成
+// おまかせボタン
 randomButton.addEventListener("click", () => {
     const selectedFighters = [];
     const result = document.getElementById("resultList");
+    while (result.firstChild) result.removeChild(result.firstChild);
 
-    // もし子要素が存在したら削除
-    while (result.firstChild) {
-        result.removeChild(result.firstChild);
-    }
-
-    // radio button の値を取得
+    // 選択数取得
     const radioButton = document.getElementsByName("radio");
-    let numSelectedFighters = 1
-
-    // 選択状態の値を取得
-    for (let i = 0; i < 3; i++) {
-        if (radioButton[i].checked) {
-            numSelectedFighters = radioButton[i].value;
-            break;
-        }
+    let numSelectedFighters = 1;
+    for (let i = 0; i < radioButton.length; i++) {
+        if (radioButton[i].checked) numSelectedFighters = Number(radioButton[i].value);
     }
 
-    // もし指定された個数文表示できなかったら
     const union = new Set([...bannedFighters, ...usedFighters]);
     const numAvailable = useHistory ? numFighters - union.size : numFighters - bannedFighters.size;
-
     if (numAvailable < numSelectedFighters) {
         alertWhenUnavaliable(numSelectedFighters, numAvailable);
-        // 結果の一覧に追加 (レイアウト維持のため)
-        const result = document.getElementById("resultList");
-        const li = document.createElement("li");
-        const fighterBox = makeFighterBox(-1);
-        li.appendChild(fighterBox);
-        result.appendChild(li);
         return;
     }
 
-    // 一時的に保存する場所
     const frag = document.createDocumentFragment();
-
     while (selectedFighters.length < numSelectedFighters) {
         const i = Math.floor(Math.random() * numFighters);
+        if (selectedFighters.includes(i)) continue;
+        if (bannedFighters.has(i) || (useHistory && usedFighters.has(i))) continue;
+
+        // 結果欄用ボックス（色なし）
+        const fighterBox = makeFighterBox(i, true);
+        frag.appendChild(fighterBox);
+        selectedFighters.push(i);
+
+        // 候補リストのみ使用済みに
+        usedFighters.add(i);
         if (useHistory) {
-            if (bannedFighters.has(i) || selectedFighters.includes(i) || usedFighters.has(i)) {
-                continue;
-            } else {
-                // キャラクタボックスを作成
-                const fighterBox = makeFighterBox(i);
-
-                frag.appendChild(fighterBox);
-
-                // 決定済みキャラに追加
-                selectedFighters.push(i);
-
-                // 使用済みキャラに追加
-                usedFighters.add(i);
-                fighterBoxes[i].classList.add("used");
-            }
-        }
-        else {
-            if (bannedFighters.has(i) || selectedFighters.includes(i)) {
-                continue;
-            } else {
-                // キャラクタボックスを作成
-                const fighterBox = makeFighterBox(i);
-
-                frag.appendChild(fighterBox);
-
-                // 決定済みキャラに追加
-                selectedFighters.push(i);
-
-                // 使用済みキャラに追加
-                usedFighters.add(i);
-            }
+            const candidateBox = fighterBoxes[i].querySelector(".imgBox");
+            candidateBox.classList.add("used");
         }
     }
-
     result.appendChild(frag);
-
-    // cookieを保存
     setCookie();
 });
 
-// historyを使う場合は，used class を付与
+// 使用済みクラス管理（候補リストのみ）
 const addUsedClass = (i) => {
-    const candidateChildren = candidate.children;
     if (usedFighters.has(i)) {
-        const child = candidateChildren[i];
-
-        // used class を削除
-        const boxDiv = child.children[0];
-        boxDiv.classList.add("used");
+        const candidateBox = fighterBoxes[i].querySelector(".imgBox");
+        candidateBox.classList.add("used");
     }
-
-    return;
-}
-
-// historyを使わない場合は，used class を削除する．set型の中身は消さない
+};
 const removeUsedClass = (i) => {
-    const candidateChildren = candidate.children;
-    if (usedFighters.has(i)) {
-        const child = candidateChildren[i];
+    const candidateBox = fighterBoxes[i].querySelector(".imgBox");
+    candidateBox.classList.remove("used");
+};
 
-        // used class を削除
-        const boxDiv = child.children[0];
-        boxDiv.classList.remove("used");
-    }
-
-    return;
-}
-
-// historyを使うかどうか
+// 履歴チェック
+const historyCheckbox = document.getElementById("historyCheckbox");
 const checkIfUseHistory = () => {
-    if (historyCheckbox.checked) {
-        useHistory = true;
-        for (let i = 0; i < numFighters; i++) {
-            addUsedClass(i);
-        }
-    } else {
-        useHistory = false;
-        for (let i = 0; i < numFighters; i++) {
-            removeUsedClass(i);
-        }
+    useHistory = historyCheckbox.checked;
+    for (let i = 0; i < numFighters; i++) {
+        if (useHistory) addUsedClass(i);
+        else removeUsedClass(i);
     }
     updateRemainingCount();
-}
+};
+historyCheckbox.addEventListener("click", checkIfUseHistory);
 
-// i番目のキャラクターをbanする関数
+// ban/unban 操作
 const banIthFighter = (i) => {
-    const candidateChildren = candidate.children;
-    const child = candidateChildren[i];
     bannedFighters.add(i);
-
-    // clicked classを削除
-    const boxDiv = child.children[0];
-    boxDiv.classList.add("clicked");
-}
-
-// i番目のキャラクターをunbanする関数
+    fighterBoxes[i].classList.add("clicked");
+};
 const unbanIthFighter = (i) => {
-    const candidateChildren = candidate.children;
-    const child = candidateChildren[i];
     bannedFighters.delete(i);
-
-    // clicked classを削除
-    const boxDiv = child.children[0];
-    boxDiv.classList.remove("clicked");
-
-}
-
-// i番目のキャラクターのhistoryを削除する関数
+    fighterBoxes[i].classList.remove("clicked");
+};
 const deleteIthFighterHistory = (i) => {
-    const candidateChildren = candidate.children;
-    const child = candidateChildren[i];
     usedFighters.delete(i);
+    fighterBoxes[i].querySelector(".imgBox").classList.remove("used");
+};
 
-    // used class を削除
-    const boxDiv = child.children[0];
-    boxDiv.classList.remove("used");
-}
-
-// allButtonがクリックされたら全てのiconをbanする
-const banAllFighters = () => {
-    const candidateChildren = candidate.children;
-    for (let i = 0; i < numFighters; i++) {
-        banIthFighter(i);
-    }
+// 全ban/unban
+document.getElementById("allButton").addEventListener("click", () => {
+    for (let i = 0; i < numFighters; i++) banIthFighter(i);
     updateRemainingCount();
-}
-
-// 全てのキャラクターをunbanする
-const unbanAllFighters = () => {
-    for (let i = 0; i < numFighters; i++) {
-        unbanIthFighter(i);
-    }
+});
+document.getElementById("unbanButton").addEventListener("click", () => {
+    for (let i = 0; i < numFighters; i++) unbanIthFighter(i);
     updateRemainingCount();
-}
+});
 
-// historyを削除する
-const deleteHistory = () => {
-    let result;
-    const fileName = getFileName();
-    if (fileName === "index_en.html") {
-        result = confirm("Are you sure you want to delete history?")
-    } else {
-        result = confirm("履歴を削除してよろしいですか？")
+// 履歴削除
+document.getElementById("deleteHistoryButton").addEventListener("click", () => {
+    if (confirm(getFileName() === "index_en.html" ? "Are you sure you want to delete history?" : "履歴を削除してよろしいですか？")) {
+        for (let i = 0; i < numFighters; i++) deleteIthFighterHistory(i);
+        setCookie();
     }
-    if (result) {
-        for (let i = 0; i < numFighters; i++) {
-            deleteIthFighterHistory(i);
-        }
-    }
-}
+});
 
-// resetButtonがクリックされたら全てのiconをunbanする
-const reset = () => {
-    let result;
-    const fileName = getFileName();
-    if (fileName === "index_en.html") {
-        result = confirm("Are you sure you want to reset?")
-    } else {
-        result = confirm("リセットしてよろしいですか？")
-    }
-
-    if (result) {
+// リセット
+document.getElementById("resetButton").addEventListener("click", () => {
+    if (confirm(getFileName() === "index_en.html" ? "Are you sure you want to reset?" : "リセットしてよろしいですか？")) {
         for (let i = 0; i < numFighters; i++) {
             unbanIthFighter(i);
             deleteIthFighterHistory(i);
         }
+        setCookie();
     }
-}
-// 残りキャラ数の表示を更新する関数
-const updateRemainingCount = () => {
-    const usedCountDisplay = document.getElementById("usedCountDisplay");
-
-    // 履歴を使う場合は使用済キャラも除外する
-    const totalExcluded = useHistory
-        ? bannedFighters.size + usedFighters.size
-        : bannedFighters.size;
-
-    const remaining = numFighters - totalExcluded;
-    usedCountDisplay.textContent = `残りキャラ数：${remaining} / ${numFighters}`;
-};
-
-import { fighters } from './fighter.js';
-
-// エクスポート
-document.getElementById("exportButton").addEventListener("click", () => {
-    const state = fighters.map(fighter => {
-        const el = document.querySelector(`.fighterBox[data-id='${fighter}']`);
-        if (!el) return 0; // 対象
-        if (el.classList.contains("clicked")) return 1; // 除外
-        if (el.classList.contains("used")) return 2; // 使用済み
-        return 0; // 対象
-    });
-
-    const jsonStr = JSON.stringify(state);
-    navigator.clipboard.writeText(jsonStr).then(() => {
-        alert("コピーしました");
-    }).catch(() => {
-        alert("コピーに失敗しました");
-    });
 });
 
-// インポート
+// 残りキャラ数
+const updateRemainingCount = () => {
+    const totalExcluded = useHistory ? bannedFighters.size + usedFighters.size : bannedFighters.size;
+    document.getElementById("usedCountDisplay").textContent = `残りキャラ数：${numFighters - totalExcluded} / ${numFighters}`;
+};
+
+// cookie操作
+const setCookie = () => {
+    document.cookie = `banned=${JSON.stringify([...bannedFighters])}; `;
+    document.cookie = `used=${JSON.stringify([...usedFighters])}; `;
+    document.cookie = `max-age=${maxAge}; `;
+};
+const getCookie = () => {
+    const cookies = document.cookie ? document.cookie.split("; ") : [];
+    cookies.forEach(c => {
+        const [key, val] = c.split("=");
+        if (key === "banned") bannedFighters = new Set(JSON.parse(val));
+        if (key === "used") usedFighters = new Set(JSON.parse(val));
+    });
+    // クラス反映
+    for (let i = 0; i < numFighters; i++) {
+        if (bannedFighters.has(i)) banIthFighter(i);
+        if (useHistory && usedFighters.has(i)) addUsedClass(i);
+    }
+};
+getCookie();
+
+// エクスポート/インポート
+document.getElementById("exportButton").addEventListener("click", () => {
+    const state = fighters.map(f => {
+        const el = document.querySelector(`.fighterBox[data-id='${f}']`);
+        if (!el) return 0;
+        if (el.classList.contains("clicked")) return 1;
+        if (el.classList.contains("used")) return 2;
+        return 0;
+    });
+    navigator.clipboard.writeText(JSON.stringify(state)).then(() => alert("コピーしました"), () => alert("コピーに失敗しました"));
+});
 document.getElementById("importButton").addEventListener("click", () => {
     const jsonStr = document.getElementById("importTextarea").value;
     if (!jsonStr) return alert("テキストが空です");
-
     let state;
     try {
         state = JSON.parse(jsonStr);
         if (!Array.isArray(state) || state.length !== fighters.length) throw "不正な形式";
-    } catch (e) {
+    } catch {
         return alert("JSON形式が不正です");
     }
-
-    fighters.forEach((fighter, i) => {
-        const el = document.querySelector(`.fighterBox[data-id='${fighter}']`);
+    fighters.forEach((f, i) => {
+        const el = document.querySelector(`.fighterBox[data-id='${f}']`);
         if (!el) return;
-
         el.classList.remove("clicked", "used");
         if (state[i] === 1) el.classList.add("clicked");
         if (state[i] === 2) el.classList.add("used");
     });
-
     alert("インポートしました");
-});
-
-// cookieの追加や削除の関数
-const setCookie = () => {
-    const valueBanned = JSON.stringify([...bannedFighters]);
-    const valueUsed = JSON.stringify([...usedFighters]);
-
-    document.cookie = "banned=" + valueBanned + "; ";
-    document.cookie = "used=" + valueUsed + "; ";
-    document.cookie = "max-age=" + maxAge + "; ";
-}
-
-const getCookie = () => {
-    const cookies = document.cookie;
-    if (cookies !== "") {
-        const cookieArr = cookies.split("; ");
-        for (let i = 0; i < cookieArr.length; i++) {
-            const cookie = cookieArr[i].split("=");
-            if (cookie[0] === "banned") {
-                const arr = JSON.parse(cookie[1]);
-                bannedFighters = new Set(arr);
-            }
-            if (cookie[0] === "used") {
-                const arr = JSON.parse(cookie[1]);
-                usedFighters = new Set(arr);
-            }
-        }
-    }
-
-    // clicked, used クラスを付与
-    for (let i = 0; i < numFighters; i++) {
-        if (bannedFighters.has(i)) {
-            banIthFighter(i);
-        }
-        if (useHistory) {
-            if (usedFighters.has(i)) {
-                addUsedClass(i);
-            }
-        }
-    }
-}
-
-const historyCheckbox = document.getElementById("historyCheckbox");
-const allButton = document.getElementById("allButton");
-const unbanButton = document.getElementById("unbanButton");
-const deleteHistoryButton = document.getElementById("deleteHistoryButton");
-const resetButton = document.getElementById("resetButton");
-
-historyCheckbox.addEventListener("click", checkIfUseHistory);
-allButton.addEventListener("click", banAllFighters);
-unbanButton.addEventListener("click", unbanAllFighters);
-deleteHistoryButton.addEventListener("click", () => {
-    deleteHistory();
-    setCookie();
-});
-resetButton.addEventListener("click", () => {
-    reset();
-    setCookie();
 });
