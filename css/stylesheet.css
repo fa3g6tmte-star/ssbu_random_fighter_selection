@@ -32,6 +32,14 @@
   font-size: 20px;
   padding: 5px 0px 2px 0px;
 }
+/* 残りキャラ数 */
+#usedCountDisplay {
+  font-weight: bold;
+  text-align: center;
+  font-size: 16px;
+  margin-top: 5px;
+  color: #333;
+}
 
 /* button */
 .radio {
