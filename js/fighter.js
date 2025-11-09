@@ -79,7 +79,13 @@ const fighters = [
     "hero",
     "banjo_and_kazooie",
     "terry",
-    "byleth"
+    "byleth",
+    "men",
+    "Homura",
+    "Sephiroth",
+    "Kazuya",
+    "Steve",
+    "Sora"
 ]
 
 const displayNameEn = [
