@@ -4,9 +4,21 @@ import { fighters, displayNameEn, displayNameJp } from "./fighter.js";
 
 const numFighters = fighters.length;
 const candidate = document.getElementById("candidateList");
+const resultList = document.getElementById("resultList");
 let bannedFighters = new Set();
 let usedFighters = new Set();
 let useHistory = false;
+
+// ボタン
+const randomButton = document.getElementById("randomButton");
+const historyCheckbox = document.getElementById("historyCheckbox");
+const allButton = document.getElementById("allButton");
+const unbanButton = document.getElementById("unbanButton");
+const deleteHistoryButton = document.getElementById("deleteHistoryButton");
+const resetButton = document.getElementById("resetButton");
+
+// キャラボックス配列（候補リストのみ）
+const fighterBoxes = [];
 
 // cookie保存期間
 const maxAge = 604800;
@@ -14,36 +26,39 @@ const maxAge = 604800;
 // ファイル名取得
 const getFileName = () => window.location.href.split("/").pop();
 
-// fighterBox作成
+// キャラボックス作成
 const makeFighterBox = (i) => {
     const fighterBox = document.createElement("div");
-    const imgDiv = document.createElement("div");
+    fighterBox.classList.add("fighterBox");
+    if (i !== -1) fighterBox.dataset.id = fighters[i];
 
-    const img = document.createElement("img");
-    img.src = "./icon_imgs/" + fighters[i] + ".png";
-    imgDiv.appendChild(img);
+    const imgDiv = document.createElement("div");
     imgDiv.classList.add("imgBox");
+    if (i !== -1) {
+        const img = document.createElement("img");
+        img.src = "./icon_imgs/" + fighters[i] + ".png";
+        imgDiv.appendChild(img);
+    }
 
     const p = document.createElement("p");
-    p.textContent = getFileName() === "index_en.html" ? displayNameEn[i].toUpperCase() : displayNameJp[i];
     p.classList.add("nameBox");
+    if (i !== -1) {
+        p.textContent = getFileName() === "index_en.html" ? displayNameEn[i].toUpperCase() : displayNameJp[i];
+    }
 
     fighterBox.appendChild(imgDiv);
     fighterBox.appendChild(p);
-    fighterBox.classList.add("fighterBox");
-    fighterBox.dataset.id = fighters[i];
-
     return fighterBox;
 };
 
 // 初期化
 window.addEventListener("DOMContentLoaded", () => {
     const frag = document.createDocumentFragment();
-
     for (let i = 0; i < numFighters; i++) {
         const li = document.createElement("li");
         const fighterBox = makeFighterBox(i);
 
+        // 候補リストのクリックでban/unban
         fighterBox.addEventListener("click", () => {
             if (fighterBox.classList.contains("clicked")) {
                 fighterBox.classList.remove("clicked");
@@ -56,9 +71,9 @@ window.addEventListener("DOMContentLoaded", () => {
         });
 
         li.appendChild(fighterBox);
+        fighterBoxes.push(fighterBox);
         frag.appendChild(li);
     }
-
     candidate.appendChild(frag);
 
     getCookie();
@@ -69,78 +84,34 @@ window.addEventListener("DOMContentLoaded", () => {
 const updateRemainingCount = () => {
     const usedCountDisplay = document.getElementById("usedCountDisplay");
     const totalExcluded = useHistory ? bannedFighters.size + usedFighters.size : bannedFighters.size;
-    usedCountDisplay.textContent = `残りキャラ数：${numFighters - totalExcluded} / ${numFighters}`;
+    const remaining = numFighters - totalExcluded;
+    usedCountDisplay.textContent = `残りキャラ数：${remaining} / ${numFighters}`;
 };
 
-// class操作系（data-id基準）
+// 全キャラban/unban
+const banAllFighters = () => {
+    fighterBoxes.forEach((box, i) => {
+        box.classList.add("clicked");
+        bannedFighters.add(i);
+    });
+    updateRemainingCount();
+};
+
+const unbanAllFighters = () => {
+    fighterBoxes.forEach((box, i) => {
+        box.classList.remove("clicked");
+        bannedFighters.delete(i);
+    });
+    updateRemainingCount();
+};
+
+// history
 const addUsedClass = (i) => {
-    const el = document.querySelector(`.fighterBox[data-id='${fighters[i]}']`);
-    if (el) el.classList.add("used");
+    if (usedFighters.has(i)) fighterBoxes[i].classList.add("used");
 };
-
 const removeUsedClass = (i) => {
-    const el = document.querySelector(`.fighterBox[data-id='${fighters[i]}']`);
-    if (el) el.classList.remove("used");
+    if (usedFighters.has(i)) fighterBoxes[i].classList.remove("used");
 };
-
-const banIthFighter = (i) => {
-    const el = document.querySelector(`.fighterBox[data-id='${fighters[i]}']`);
-    if (el) el.classList.add("clicked");
-    bannedFighters.add(i);
-};
-
-const unbanIthFighter = (i) => {
-    const el = document.querySelector(`.fighterBox[data-id='${fighters[i]}']`);
-    if (el) el.classList.remove("clicked");
-    bannedFighters.delete(i);
-};
-
-const deleteIthFighterHistory = (i) => {
-    const el = document.querySelector(`.fighterBox[data-id='${fighters[i]}']`);
-    if (el) el.classList.remove("used");
-    usedFighters.delete(i);
-};
-
-// おまかせボタン
-document.getElementById("randomButton").addEventListener("click", () => {
-    const result = document.getElementById("resultList");
-    while (result.firstChild) result.removeChild(result.firstChild);
-
-    const radioButton = document.getElementsByName("radio");
-    let numSelectedFighters = 1;
-    for (let i = 0; i < 3; i++) if (radioButton[i].checked) numSelectedFighters = radioButton[i].value;
-
-    const union = new Set([...bannedFighters, ...usedFighters]);
-    const numAvailable = useHistory ? numFighters - union.size : numFighters - bannedFighters.size;
-
-    if (numAvailable < numSelectedFighters) {
-        alert(`キャラが足りません。`);
-        const li = document.createElement("li");
-        li.appendChild(document.createElement("div")); // 空ボックス
-        result.appendChild(li);
-        return;
-    }
-
-    const frag = document.createDocumentFragment();
-    const selectedFighters = [];
-
-    while (selectedFighters.length < numSelectedFighters) {
-        const i = Math.floor(Math.random() * numFighters);
-        if (selectedFighters.includes(i)) continue;
-        if (bannedFighters.has(i) || (useHistory && usedFighters.has(i))) continue;
-
-        const fighterBox = makeFighterBox(i);
-        frag.appendChild(fighterBox);
-        selectedFighters.push(i);
-        usedFighters.add(i);
-        fighterBox.classList.add("used");
-    }
-
-    result.appendChild(frag);
-    setCookie();
-});
-
-// historyチェック
 const checkIfUseHistory = () => {
     useHistory = historyCheckbox.checked;
     for (let i = 0; i < numFighters; i++) {
@@ -149,44 +120,92 @@ const checkIfUseHistory = () => {
     updateRemainingCount();
 };
 
-// ボタン操作
-const historyCheckbox = document.getElementById("historyCheckbox");
-historyCheckbox.addEventListener("click", checkIfUseHistory);
+// 個別history削除
+const deleteIthFighterHistory = (i) => {
+    usedFighters.delete(i);
+    fighterBoxes[i].classList.remove("used");
+};
 
-const allButton = document.getElementById("allButton");
-allButton.addEventListener("click", () => {
-    for (let i = 0; i < numFighters; i++) banIthFighter(i);
-    updateRemainingCount();
-});
-
-const unbanButton = document.getElementById("unbanButton");
-unbanButton.addEventListener("click", () => {
-    for (let i = 0; i < numFighters; i++) unbanIthFighter(i);
-    updateRemainingCount();
-});
-
-const deleteHistoryButton = document.getElementById("deleteHistoryButton");
-deleteHistoryButton.addEventListener("click", () => {
+// 履歴削除
+const deleteHistory = () => {
+    if (!confirm(getFileName() === "index_en.html" ? "Are you sure you want to delete history?" : "履歴を削除してよろしいですか？")) return;
     for (let i = 0; i < numFighters; i++) deleteIthFighterHistory(i);
-    setCookie();
-});
+};
 
-const resetButton = document.getElementById("resetButton");
-resetButton.addEventListener("click", () => {
+// リセット
+const reset = () => {
+    if (!confirm(getFileName() === "index_en.html" ? "Are you sure you want to reset?" : "リセットしてよろしいですか？")) return;
     for (let i = 0; i < numFighters; i++) {
-        unbanIthFighter(i);
-        deleteIthFighterHistory(i);
+        fighterBoxes[i].classList.remove("clicked", "used");
+        bannedFighters.delete(i);
+        usedFighters.delete(i);
     }
+    updateRemainingCount();
+};
+
+// cookie
+const setCookie = () => {
+    document.cookie = `banned=${JSON.stringify([...bannedFighters])}; max-age=${maxAge};`;
+    document.cookie = `used=${JSON.stringify([...usedFighters])}; max-age=${maxAge};`;
+};
+const getCookie = () => {
+    const cookies = document.cookie ? document.cookie.split("; ") : [];
+    cookies.forEach(c => {
+        const [key, val] = c.split("=");
+        if (key === "banned") bannedFighters = new Set(JSON.parse(val));
+        if (key === "used") usedFighters = new Set(JSON.parse(val));
+    });
+
+    fighterBoxes.forEach((box, i) => {
+        if (bannedFighters.has(i)) box.classList.add("clicked");
+        if (useHistory && usedFighters.has(i)) box.classList.add("used");
+    });
+};
+
+// おまかせボタン
+randomButton.addEventListener("click", () => {
+    const selectedFighters = [];
+    while (resultList.firstChild) resultList.removeChild(resultList.firstChild);
+
+    const radioButton = document.getElementsByName("radio");
+    let numSelectedFighters = 1;
+    for (let i = 0; i < radioButton.length; i++) {
+        if (radioButton[i].checked) {
+            numSelectedFighters = Number(radioButton[i].value);
+            break;
+        }
+    }
+
+    const union = new Set([...bannedFighters, ...usedFighters]);
+    const numAvailable = useHistory ? numFighters - union.size : numFighters - bannedFighters.size;
+    if (numAvailable < numSelectedFighters) {
+        alert(`選択可能なキャラが足りません`);
+        return;
+    }
+
+    const frag = document.createDocumentFragment();
+    while (selectedFighters.length < numSelectedFighters) {
+        const i = Math.floor(Math.random() * numFighters);
+        if (selectedFighters.includes(i)) continue;
+        if (bannedFighters.has(i) || (useHistory && usedFighters.has(i))) continue;
+
+        // 結果表示には候補リストをコピー
+        const fighterBox = fighterBoxes[i].cloneNode(true);
+        frag.appendChild(fighterBox);
+
+        selectedFighters.push(i);
+        usedFighters.add(i);
+        fighterBoxes[i].classList.add("used");
+    }
+    resultList.appendChild(frag);
     setCookie();
 });
 
-// エクスポート
+// export/import
 document.getElementById("exportButton").addEventListener("click", () => {
-    const state = fighters.map((fighter, i) => {
-        const el = document.querySelector(`.fighterBox[data-id='${fighter}']`);
-        if (!el) return 0;
-        if (el.classList.contains("clicked")) return 1;
-        if (el.classList.contains("used")) return 2;
+    const state = fighterBoxes.map((box, i) => {
+        if (box.classList.contains("clicked")) return 1;
+        if (box.classList.contains("used")) return 2;
         return 0;
     });
     navigator.clipboard.writeText(JSON.stringify(state))
@@ -194,53 +213,30 @@ document.getElementById("exportButton").addEventListener("click", () => {
         .catch(() => alert("コピーに失敗しました"));
 });
 
-// インポート
 document.getElementById("importButton").addEventListener("click", () => {
     const jsonStr = document.getElementById("importTextarea").value;
     if (!jsonStr) return alert("テキストが空です");
-
     let state;
     try {
         state = JSON.parse(jsonStr);
-        if (!Array.isArray(state) || state.length !== fighters.length) throw "不正形式";
+        if (!Array.isArray(state) || state.length !== numFighters) throw "不正";
     } catch {
         return alert("JSON形式が不正です");
     }
-
-    fighters.forEach((fighter, i) => {
-        const el = document.querySelector(`.fighterBox[data-id='${fighter}']`);
-        if (!el) return;
-        el.classList.remove("clicked", "used");
-        if (state[i] === 1) el.classList.add("clicked");
-        if (state[i] === 2) el.classList.add("used");
-        state[i] === 1 ? bannedFighters.add(i) : bannedFighters.delete(i);
-        state[i] === 2 ? usedFighters.add(i) : usedFighters.delete(i);
+    state.forEach((s, i) => {
+        fighterBoxes[i].classList.remove("clicked", "used");
+        if (s === 1) fighterBoxes[i].classList.add("clicked");
+        if (s === 2) fighterBoxes[i].classList.add("used");
+        if (s === 1) bannedFighters.add(i);
+        if (s === 2) usedFighters.add(i);
     });
-
     updateRemainingCount();
     alert("インポートしました");
 });
 
-// Cookie操作
-const setCookie = () => {
-    document.cookie = "banned=" + JSON.stringify([...bannedFighters]) + "; max-age=" + maxAge + ";";
-    document.cookie = "used=" + JSON.stringify([...usedFighters]) + "; max-age=" + maxAge + ";";
-};
-
-const getCookie = () => {
-    if (!document.cookie) return;
-    const cookieArr = document.cookie.split("; ");
-    for (const c of cookieArr) {
-        const [key, value] = c.split("=");
-        if (key === "banned") bannedFighters = new Set(JSON.parse(value));
-        if (key === "used") usedFighters = new Set(JSON.parse(value));
-    }
-    // クラス反映
-    for (let i = 0; i < numFighters; i++) {
-        if (bannedFighters.has(i)) banIthFighter(i);
-        if (useHistory && usedFighters.has(i)) addUsedClass(i);
-    }
-};
-
-getCookie();
-updateRemainingCount();
+// イベント
+historyCheckbox.addEventListener("click", checkIfUseHistory);
+allButton.addEventListener("click", banAllFighters);
+unbanButton.addEventListener("click", unbanAllFighters);
+deleteHistoryButton.addEventListener("click", () => { deleteHistory(); setCookie(); });
+resetButton.addEventListener("click", () => { reset(); setCookie(); });
