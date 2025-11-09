@@ -190,12 +190,12 @@ randomButton.addEventListener("click", () => {
         if (bannedFighters.has(i) || (useHistory && usedFighters.has(i))) continue;
 
         // 結果表示には候補リストをコピー
-        const fighterBox = fighterBoxes[i].cloneNode(true);
+        const fighterBox = makeFighterBox(i);
+        fighterBox.classList.add("used"); // 結果だけ青にする
         frag.appendChild(fighterBox);
 
         selectedFighters.push(i);
-        usedFighters.add(i);
-        fighterBoxes[i].classList.add("used");
+        usedFighters.add(i); // 履歴に追加するだけで候補リストには class 付けない
     }
     resultList.appendChild(frag);
     setCookie();
