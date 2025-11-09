@@ -355,6 +355,55 @@ const updateRemainingCount = () => {
     usedCountDisplay.textContent = `残りキャラ数：${remaining} / ${numFighters}`;
 };
 
+// エクスポートボタン
+document.getElementById("exportButton").addEventListener("click", () => {
+    const fighters = document.querySelectorAll(".fighterBox");
+    const state = [];
+
+    fighters.forEach(f => {
+        state.push({
+            id: f.dataset.id,                // キャラ識別用ID
+            clicked: f.classList.contains("clicked"),
+            used: f.classList.contains("used")
+        });
+    });
+
+    const jsonStr = JSON.stringify(state);
+    navigator.clipboard.writeText(jsonStr).then(() => {
+        alert("コピーしました！");
+    }).catch(() => {
+        alert("コピーに失敗しました");
+    });
+});
+
+// インポートボタン
+document.getElementById("importButton").addEventListener("click", () => {
+    const jsonStr = document.getElementById("importTextarea").value;
+    if (!jsonStr) return alert("テキストが空です");
+
+    let state;
+    try {
+        state = JSON.parse(jsonStr);
+    } catch (e) {
+        return alert("JSON形式が不正です");
+    }
+
+    const fighters = document.querySelectorAll(".fighterBox");
+    fighters.forEach(f => {
+        const s = state.find(x => x.id === f.dataset.id);
+        if (s) {
+            f.classList.toggle("clicked", s.clicked);
+            f.classList.toggle("used", s.used);
+        } else {
+            // stateにない場合はリセット
+            f.classList.remove("clicked", "used");
+        }
+    });
+
+    alert("状態を反映しました");
+});
+
+
 // cookieの追加や削除の関数
 const setCookie = () => {
     const valueBanned = JSON.stringify([...bannedFighters]);
