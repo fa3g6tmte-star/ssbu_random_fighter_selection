@@ -1,3 +1,5 @@
+
+
 く/ 厳密なエラーチェック
 "use strict";
 
@@ -360,6 +362,49 @@ const updateRemainingCount = () => {
 };
 
 import { fighters } from './fighter.js';
+
+// エクスポート
+document.getElementById("exportButton").addEventListener("click", () => {
+    const state = fighters.map(fighter => {
+        const el = document.querySelector(`.fighterBox[data-id='${fighter}']`);
+        if (!el) return 0; // 対象
+        if (el.classList.contains("clicked")) return 1; // 除外
+        if (el.classList.contains("used")) return 2; // 使用済み
+        return 0; // 対象
+    });
+
+    const jsonStr = JSON.stringify(state);
+    navigator.clipboard.writeText(jsonStr).then(() => {
+        alert("コピーしました");
+    }).catch(() => {
+        alert("コピーに失敗しました");
+    });
+});
+
+// インポート
+document.getElementById("importButton").addEventListener("click", () => {
+    const jsonStr = document.getElementById("importTextarea").value;
+    if (!jsonStr) return alert("テキストが空です");
+
+    let state;
+    try {
+        state = JSON.parse(jsonStr);
+        if (!Array.isArray(state) || state.length !== fighters.length) throw "不正な形式";
+    } catch (e) {
+        return alert("JSON形式が不正です");
+    }
+
+    fighters.forEach((fighter, i) => {
+        const el = document.querySelector(`.fighterBox[data-id='${fighter}']`);
+        if (!el) return;
+
+        el.classList.remove("clicked", "used");
+        if (state[i] === 1) el.classList.add("clicked");
+        if (state[i] === 2) el.classList.add("used");
+    });
+
+    alert("インポートしました");
+});
 
 // cookieの追加や削除の関数
 const setCookie = () => {
