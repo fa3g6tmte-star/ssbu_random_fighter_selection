@@ -62,22 +62,15 @@
                 </p>
                 <p id="usedCountDisplay">残りキャラ数：0 / 0</p>
             </div>
-
-            <!-- 状態のエクスポート/インポート -->
-            <div class="exportImportState">
-                <!-- エクスポート -->
+                    
+            <div class="checkboxRight">
                 <p class="button">
                     <button type="button" id="exportButton">エクスポート</button>
-                </p>
-                <textarea id="exportTextarea" rows="5" cols="40" readonly placeholder="エクスポート用テキストエリア"></textarea>
-                <!-- インポート -->
-                <p class="button">
                     <button type="button" id="importButton">インポート</button>
                 </p>
-                <textarea id="importTextarea" rows="5" cols="40" placeholder="インポート用テキストエリア"></textarea>
+                <textarea id="exportTextarea" rows="1" cols="20" readonly placeholder="コピー用"></textarea>
+                <textarea id="importTextarea" rows="1" cols="20" placeholder="貼り付け"></textarea>
             </div>
-
-
 
             <!-- リザルトボックス -->
             <div class="result" id="result">
