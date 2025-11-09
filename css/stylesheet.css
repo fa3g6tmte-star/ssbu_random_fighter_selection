@@ -5,7 +5,7 @@
   
   .container {
     /*  width: 100%;  */
-    width: 90%;       /* 横幅を90%にする */
+    width: 100%;       /* 横幅を0%にする */
     max-width: 800px; /* 最大幅を設定 */
     margin: 0 auto;   /* 中央寄せ */
   }
