@@ -355,7 +355,7 @@ const updateRemainingCount = () => {
         ? bannedFighters.size + usedFighters.size
         : bannedFighters.size;
 
-    const remaining = numFighters - totalExcluded;
+    const remaining = Math.max(numFighters - totalExcluded, 0);
     usedCountDisplay.textContent = `残りキャラ数：${remaining} / ${numFighters}`;
 };
 
