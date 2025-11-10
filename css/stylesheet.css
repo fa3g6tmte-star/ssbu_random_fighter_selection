@@ -169,7 +169,8 @@
         flex-wrap: wrap;
     list-style: none;
   }
- 
+  
+  /* キャラアイコンをいれるボックス */
   .fighterBox {
     width: 78px;
     height: 110px;
@@ -179,6 +180,7 @@
     -webkit-transition: 0.8s;
     transition: 0.8s;
   }
+  
   .fighterBox p {
     height: 20%;
     font-size: 11px;
