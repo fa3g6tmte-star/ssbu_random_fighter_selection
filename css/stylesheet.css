@@ -45,7 +45,7 @@
     color: #333;
   }
 
-  /* button */
+  /* button 
   .radio {
     margin: 5px auto;
     text-align: center;
@@ -54,7 +54,21 @@
   }
   
   .radio input {
-  margin: 0 10px; /* 左右10pxずつ余白 */
+  margin: 0 10px; /左右10pxずつ余白 
+}*/
+.radio {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px; /* ボタン同士の間隔 */
+  font-size: 16px;
+  padding: 10px 0px;
+}
+
+/* ラジオボタン自体のサイズ */
+.radio input {
+  margin-right: 4px;  /* ボタンと数字の間隔を狭く */
+  transform: scale(1.2); /* ボタンを少し大きめに表示したい場合 */
 }
   
   .button {
