@@ -172,7 +172,7 @@
   
   /* キャラアイコンをいれるボックス */
   .fighterBox {
-    width: 78px;
+    width: 100px;
     height: 110px;
     text-align: center;
     padding: 0px 8px 5px 8px;
