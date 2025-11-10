@@ -219,7 +219,6 @@ randomButton.addEventListener("click", () => {
     
 });
 
-
 // historyを使う場合は，used class を付与
 const addUsedClass = (i) => {
     const candidateChildren = candidate.children;
