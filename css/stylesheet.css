@@ -167,7 +167,6 @@
     display: flex;
     align-items: center;   /* 縦中央揃え */
     justify-content: center; /* 横方向中央揃え */
-    gap: 20px;              /* 要素間の間隔 */
     margin: 10px 0;        /* 上下の余白 */
 }
 
@@ -190,6 +189,7 @@
 }
 
 /* ▼ プルダウンデザイン改善 */
+/* ▼ プルダウンデザイン改善 */
 #importSource {
     appearance: none; /* ブラウザ標準のスタイルを無効化 */
     -webkit-appearance: none; /* Safari対応 */
@@ -204,12 +204,21 @@
     cursor: pointer;
     text-align: center;
     text-align-last: center; /* Safariで中央揃えに */
-    position: relative;
-    background-image: linear-gradient(45deg, transparent 50%, #555 50%), 
-                      linear-gradient(135deg, #555 50%, transparent 50%);
-    background-position: calc(100% - 20px) calc(50% - 3px), 
-                         calc(100% - 15px) calc(50% - 3px);
-    background-size: 5px 5px, 5px 5px;
+    min-width: 110px; /* 少し広めにして崩れ防止 */
+
+    /* ▼ 矢印を追加（iOS Safariでも見えるよう強化） */
+    background-image:
+        linear-gradient(45deg, transparent 50%, #555 50%),
+        linear-gradient(135deg, #555 50%, transparent 50%),
+        linear-gradient(to right, #ccc, #ccc); /* 左枠補強線 */
+    background-position:
+        calc(100% - 18px) calc(50% - 4px),
+        calc(100% - 13px) calc(50% - 4px),
+        0 0;
+    background-size:
+        5px 5px,
+        5px 5px,
+        1px 100%;
     background-repeat: no-repeat;
 }
 
@@ -220,9 +229,9 @@
     box-shadow: 0 0 4px rgba(85, 85, 255, 0.5);
 }
 
-/* ▼ SafariやiOSで見切れ防止 */
+/* ▼ IE対策 */
 #importSource::-ms-expand {
-    display: none; /* IE対策 */
+    display: none;
 }
 
 /* ▼ exportImportState 内の要素間隔を少し整える */
