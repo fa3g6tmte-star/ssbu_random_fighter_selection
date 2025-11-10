@@ -355,6 +355,79 @@ const updateRemainingCount = () => {
     usedCountDisplay.textContent = `残りキャラ数：${remaining} / ${numFighters}`;
 };
 
+// --- エクスポート / インポート 機能 ---
+
+const exportButton = document.getElementById("exportButton");
+const importButton = document.getElementById("importButton");
+const importTextarea = document.getElementById("importTextarea");
+
+// エクスポート機能
+exportButton.addEventListener("click", () => {
+    const data = {
+        banned: [...bannedFighters],
+        used: [...usedFighters],
+    };
+    const jsonText = JSON.stringify(data);
+    navigator.clipboard.writeText(jsonText)
+        .then(() => {
+            alert("クリップボードにコピーしました！");
+        })
+        .catch(() => {
+            importTextarea.value = jsonText;
+            alert("コピーに失敗しました。");
+        });
+});
+
+// インポート機能
+importButton.addEventListener("click", () => {
+    const text = importTextarea.value.trim();
+    if (!text) {
+        alert("テキストを入力してください。");
+        return;
+    }
+
+    let data;
+    try {
+        data = JSON.parse(text);
+    } catch (e) {
+        alert("形式が正しくありません。");
+        return;
+    }
+
+    if (!data.banned || !data.used) {
+        alert("データが不完全です。");
+        return;
+    }
+
+    // 現在の状態をリセット
+    bannedFighters.clear();
+    usedFighters.clear();
+
+    // 新しいデータを反映
+    data.banned.forEach(i => bannedFighters.add(i));
+    data.used.forEach(i => usedFighters.add(i));
+
+    // UI更新
+    for (let i = 0; i < numFighters; i++) {
+        if (bannedFighters.has(i)) {
+            banIthFighter(i);
+        } else {
+            unbanIthFighter(i);
+        }
+
+        if (useHistory && usedFighters.has(i)) {
+            addUsedClass(i);
+        } else {
+            removeUsedClass(i);
+        }
+    }
+
+    setCookie();
+    updateRemainingCount();
+
+    alert("状態をインポートしました！");
+});
+
 // cookieの追加や削除の関数
 const setCookie = () => {
     const valueBanned = JSON.stringify([...bannedFighters]);
