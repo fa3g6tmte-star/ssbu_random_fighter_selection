@@ -116,26 +116,14 @@
             justify-content: center;
   }
   
-  .counterWrapper {
-      display: inline-flex;       
-      align-items: center;        /* 縦方向中央揃え */
-      gap: 10px;                  /* おまかせボタンとの間隔 */
-  }
-  
-  .button {
-    margin: 5px auto;
-    text-align: center; /* ボタン群を中央揃えにする */
-    padding: 5px 0px;
-    height: auto;
-}
 .counterContainer {
     display: flex;
     justify-content: center; /* 横方向のボタンを中央揃え */
     align-items: center;
     gap: 4px; /* ボタン間の間隔 */
-    margin-top: 10px; /* おまかせボタンとの間隔 */
-}
-  
+    margin-top: 15px; /* おまかせボタンとの間隔 */
+    
+  }
   
   .button button {
     border: grey 0.5px solid;
