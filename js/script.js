@@ -141,17 +141,18 @@ randomButton.addEventListener("click", () => {
         result.removeChild(result.firstChild);
     }
 
-    // radio button の値を取得
-    const radioButton = document.getElementsByName("radio");
-    let numSelectedFighters = 1
 
-    // 選択状態の値を取得
-    for (let i = 0; i < 3; i++) {
-        if (radioButton[i].checked) {
-            numSelectedFighters = radioButton[i].value;
-            break;
+        // radio button の値を取得
+        const radioButton = document.getElementsByName("radio");
+        let numSelectedFighters = 1;
+        
+        // 選択状態の値を取得（全てのボタンをチェック）
+        for (let i = 0; i < radioButton.length; i++) {
+            if (radioButton[i].checked) {
+                numSelectedFighters = parseInt(radioButton[i].value);
+                break;
+            }
         }
-    }
 
     // もし指定された個数文表示できなかったら
     const union = new Set([...bannedFighters, ...usedFighters]);
