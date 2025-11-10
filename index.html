@@ -56,18 +56,16 @@
                     <input name="radio" type="radio" value="4"> 4
                     <input name="radio" type="radio" value="5"> 5
                 </p>
-
                 <p class="button">
-                    <button type="button" id="randomButton">
-                        おまかせ
-                    </button>
-                    <!-- カウンター追加 -->
-                    <div class="counterContainer">
-                        <button type="button" id="decreaseCounter">−</button>
-                        <input type="number" id="counterDisplay" value="0" min="-999" max="999">
-                        <button type="button" id="increaseCounter">+</button>
-                        <button type="button" id="clearCounter">クリア</button>
-                    </div>
+                    <button type="button" id="randomButton">おまかせ</button>
+                    <span class="counterWrapper">
+                        <div class="counterContainer">
+                            <button id="decreaseCounter">−</button>
+                            <input type="number" id="counterDisplay" value="0" min="-999" max="999">
+                            <button id="increaseCounter">+</button>
+                            <button id="clearCounter">クリア</button>
+                        </div>
+                    </span>
                 </p>
                 <p id="usedCountDisplay">残りキャラ数：0 / 0</p>
             </div>
