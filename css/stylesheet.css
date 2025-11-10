@@ -122,6 +122,25 @@
       gap: 10px;                  /* おまかせボタンとの間隔 */
   }
   
+  .button {
+    margin: 5px auto;
+    text-align: center; /* ボタン群を中央揃えにする */
+    padding: 5px 0px;
+    height: auto;
+}
+
+.randomAndCounter {
+    display: inline-flex;
+    align-items: center;  /* 縦方向中央揃え */
+    gap: 10px;            /* おまかせボタンとカウンター間の余白 */
+}
+
+.counterContainer {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;             /* カウンターボタンの間隔 */
+}
+  
   
   .button button {
     border: grey 0.5px solid;
