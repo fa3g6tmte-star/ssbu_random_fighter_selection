@@ -384,35 +384,53 @@ exportButton.addEventListener("click", () => {
 });
 
 // インポート機能
-importButton.addEventListener("click", () => {
+importButton.addEventListener("click", async () => {
+    const source = document.getElementById("importSource")?.value || "text";
     const text = importTextarea.value.trim();
-    if (!text) {
-        alert("テキストを入力してください。");
-        return;
-    }
-
     let data;
-    try {
-        data = JSON.parse(text);
-    } catch (e) {
-        alert("形式が正しくありません。");
-        return;
+
+    if (source === "text") {
+        // ▼ 従来通りテキストエリアから読み込み
+        if (!text) {
+            alert("テキストを入力してください。");
+            return;
+        }
+        try {
+            data = JSON.parse(text);
+        } catch (e) {
+            alert("形式が正しくありません。");
+            return;
+        }
+    } else {
+        // ▼ GitHubから該当JSONファイルを読み込み
+        const fileName = encodeURIComponent(source) + ".json";
+        const url = `https://raw.githubusercontent.com/fa3g6tmte-star/ssbu_random_fighter_selection/master/json/${fileName}`;
+        try {
+            const response = await fetch(url);
+            if (!response.ok) throw new Error("ファイルが見つかりません。");
+            data = await response.json();
+        } catch (err) {
+            console.error(err);
+            alert("JSONファイルの取得に失敗しました。");
+            return;
+        }
     }
 
+    // ▼ データの妥当性チェック
     if (!data.banned || !data.used) {
         alert("データが不完全です。");
         return;
     }
 
-    // 現在の状態をリセット
+    // ▼ 現在の状態をリセット
     bannedFighters.clear();
     usedFighters.clear();
 
-    // 新しいデータを反映
+    // ▼ 新しいデータを反映
     data.banned.forEach(i => bannedFighters.add(i));
     data.used.forEach(i => usedFighters.add(i));
 
-    // UI更新
+    // ▼ UI更新
     for (let i = 0; i < numFighters; i++) {
         if (bannedFighters.has(i)) {
             banIthFighter(i);
@@ -430,7 +448,7 @@ importButton.addEventListener("click", () => {
     setCookie();
     updateRemainingCount();
 
-    //alert("状態をインポートしました！");
+    alert(`${source === "text" ? "テキスト" : source + ".json"} からインポートしました！`);
 });
 
 // --- インポートテキストエリア クリア機能 ---
