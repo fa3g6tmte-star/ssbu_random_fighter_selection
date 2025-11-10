@@ -45,6 +45,36 @@
     color: #333;
   }
 
+.counterContainer {
+    display: inline-flex;
+    align-items: center;
+    margin-left: 20px; /* おまかせボタンとの余白 */
+    gap: 4px;
+}
+
+.counterContainer button {
+    padding: 4px 8px;
+    font-size: 16px;
+    cursor: pointer;
+    border: 1px solid #888;
+    border-radius: 4px;
+    background-color: #f0f0f0;
+    transition: 0.2s;
+}
+
+.counterContainer button:hover {
+    background-color: #e0e0ff;
+}
+
+#counterDisplay {
+    width: 50px;
+    text-align: center;
+    font-size: 16px;
+    border: 1px solid #888;
+    border-radius: 4px;
+}
+
+
 #randomButton {
   font-size: 18px;
   padding: 8px 20px;
