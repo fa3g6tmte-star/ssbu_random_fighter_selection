@@ -229,20 +229,31 @@ randomButton.addEventListener("click", () => {
 const addResultClickToggle = (fighterBox, fighterIndex) => {
     fighterBox.addEventListener("click", () => {
         const imgDiv = fighterBox.querySelector(".imgBox");
+
         if (bannedFighters.has(fighterIndex)) {
             // 除外解除
             bannedFighters.delete(fighterIndex);
             imgDiv.classList.remove("clicked");
+
+            // 候補一覧も解除
+            if (fighterBoxes[fighterIndex]) {
+                fighterBoxes[fighterIndex].querySelector(".imgBox").classList.remove("clicked");
+            }
         } else {
             // 除外
             bannedFighters.add(fighterIndex);
             imgDiv.classList.add("clicked");
+
+            // 候補一覧にも反映
+            if (fighterBoxes[fighterIndex]) {
+                fighterBoxes[fighterIndex].querySelector(".imgBox").classList.add("clicked");
+            }
         }
+
         updateRemainingCount();
         setCookie();
     });
 };
-
 
 
 // historyを使う場合は，used class を付与
