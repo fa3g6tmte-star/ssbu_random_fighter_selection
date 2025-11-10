@@ -374,7 +374,7 @@ exportButton.addEventListener("click", () => {
     const jsonText = JSON.stringify(data);
     navigator.clipboard.writeText(jsonText)
         .then(() => {
-            alert("クリップボードにコピーしました！");
+            alert("クリップボードにコピーしました。");
         })
         .catch(() => {
             importTextarea.value = jsonText;
@@ -430,6 +430,14 @@ importButton.addEventListener("click", () => {
     updateRemainingCount();
 
     alert("状態をインポートしました！");
+});
+
+// --- インポートテキストエリア クリア機能 ---
+const clearImportButton = document.getElementById("clearImportButton");
+
+clearImportButton.addEventListener("click", () => {
+    importTextarea.value = "";
+    alert("テキストエリアをクリアしました。");
 });
 
 // cookieの追加や削除の関数
