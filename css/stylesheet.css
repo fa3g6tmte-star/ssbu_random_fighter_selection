@@ -48,6 +48,7 @@
 #randomButton {
   font-size: 18px;
   padding: 8px 20px;
+  margin-bottom: 10px; /* 下に余白を追加 */
   border-radius: 6px;       /* 角を丸くする */
   background-color: #f0f0f0; /* 背景色 */
   border: 1px solid #888;    /* 枠線 */
@@ -70,7 +71,7 @@
 
 /* ラジオボタン自体のサイズ */
 .radio input {
-  margin-right: 2px;  /* ボタンと数字の間隔を狭く */
+  margin-right: 1px;  /* ボタンと数字の間隔を狭く */
   transform: scale(1.2); /* ボタンを少し大きめに表示したい場合 */
 }
   
