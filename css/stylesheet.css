@@ -48,7 +48,7 @@
 #randomButton {
   font-size: 18px;
   padding: 8px 20px;
-  margin-bottom: 10px; /* 下に余白を追加 */
+  margin-bottom: 20px; /* 下に余白を追加 */
   border-radius: 6px;       /* 角を丸くする */
   background-color: #f0f0f0; /* 背景色 */
   border: 1px solid #888;    /* 枠線 */
