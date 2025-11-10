@@ -79,7 +79,8 @@
     margin: 5px auto;
     text-align: center;
     padding: 5px 0px;
-    height: 32px;
+     /* height: 32px;*/
+    height: auto; 
     -webkit-box-pack: center;
         -ms-flex-pack: center;
             justify-content: center;
