@@ -491,9 +491,11 @@ allButton.addEventListener("click", banAllFighters);
 unbanButton.addEventListener("click", unbanAllFighters);
 deleteHistoryButton.addEventListener("click", () => {
     deleteHistory();
+    updateRemainingCount();
     setCookie();
 });
 resetButton.addEventListener("click", () => {
     reset();
+    updateRemainingCount();
     setCookie();
 });
