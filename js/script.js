@@ -441,6 +441,39 @@ clearImportButton.addEventListener("click", () => {
     //alert("テキストエリアをクリアしました。");
 });
 
+// --- カウンター機能 ---
+const counterDisplay = document.getElementById("counterDisplay");
+const increaseCounter = document.getElementById("increaseCounter");
+const decreaseCounter = document.getElementById("decreaseCounter");
+const clearCounter = document.getElementById("clearCounter");
+
+const MAX_COUNT = 999;
+const MIN_COUNT = -999;
+
+const updateCounter = (value) => {
+    let val = parseInt(value);
+    if (isNaN(val)) val = 0;
+    if (val > MAX_COUNT) val = MAX_COUNT;
+    if (val < MIN_COUNT) val = MIN_COUNT;
+    counterDisplay.value = val;
+}
+
+increaseCounter.addEventListener("click", () => {
+    updateCounter(parseInt(counterDisplay.value) + 1);
+});
+
+decreaseCounter.addEventListener("click", () => {
+    updateCounter(parseInt(counterDisplay.value) - 1);
+});
+
+clearCounter.addEventListener("click", () => {
+    updateCounter(0);
+});
+
+counterDisplay.addEventListener("input", (e) => {
+    updateCounter(e.target.value);
+});
+
 // cookieの追加や削除の関数
 const setCookie = () => {
     const valueBanned = JSON.stringify([...bannedFighters]);
