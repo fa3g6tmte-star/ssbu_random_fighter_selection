@@ -384,17 +384,22 @@ exportButton.addEventListener("click", () => {
 });
 
 // インポート機能
+// ===============================
+// ✅ インポート機能（プルダウン対応版）
+// ===============================
 importButton.addEventListener("click", async () => {
-    const source = document.getElementById("importSource")?.value || "text";
+    const sourceSelect = document.getElementById("importSource");
+    const source = sourceSelect ? sourceSelect.value : "text";
     const text = importTextarea.value.trim();
     let data;
 
     if (source === "text") {
-        // ▼ 従来通りテキストエリアから読み込み
+        // ▼ テキストから読み込み（従来通り）
         if (!text) {
             alert("テキストを入力してください。");
             return;
         }
+
         try {
             data = JSON.parse(text);
         } catch (e) {
@@ -402,7 +407,7 @@ importButton.addEventListener("click", async () => {
             return;
         }
     } else {
-        // ▼ GitHubから該当JSONファイルを読み込み
+        // ▼ JSONファイルをGitHubから取得
         const fileName = encodeURIComponent(source) + ".json";
         const url = `https://raw.githubusercontent.com/fa3g6tmte-star/ssbu_random_fighter_selection/master/json/${fileName}`;
         try {
