@@ -45,17 +45,20 @@
     color: #333;
   }
 
-  /* button 
-  .radio {
-    margin: 5px auto;
-    text-align: center;
-    font-size: 16px;
-    padding: 10px 0px;
-  }
-  
-  .radio input {
-  margin: 0 10px; /左右10pxずつ余白 
-}*/
+#randomButton {
+  font-size: 18px;
+  padding: 8px 20px;
+  border-radius: 6px;       /* 角を丸くする */
+  background-color: #f0f0f0; /* 背景色 */
+  border: 1px solid #888;    /* 枠線 */
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+#randomButton:hover {
+  background-color: #e0e0ff; /* ホバー時の色変更 */
+}
+
 .radio {
   display: flex;
   justify-content: center;
@@ -67,7 +70,7 @@
 
 /* ラジオボタン自体のサイズ */
 .radio input {
-  margin-right: 4px;  /* ボタンと数字の間隔を狭く */
+  margin-right: 2px;  /* ボタンと数字の間隔を狭く */
   transform: scale(1.2); /* ボタンを少し大きめに表示したい場合 */
 }
   
