@@ -182,8 +182,8 @@
 
 .exportImportState textarea {
     border: grey 0.5px solid;  /* おまかせボタンと同じ枠 */
-    width: 120px;          /* テキストボックスの幅 */
-    height: 30px;
+    width: 90px;          /* テキストボックスの幅 */
+    height: 24px;
     font-size: 10px;
     resize: none;          /* サイズ変更不可 */
     padding: 2px;
