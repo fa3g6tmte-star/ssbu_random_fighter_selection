@@ -210,8 +210,12 @@ randomButton.addEventListener("click", () => {
 
     result.appendChild(frag);
 
+    updateRemainingCount();
+
     // cookieを保存
     setCookie();
+    
+    
 });
 
 // historyを使う場合は，used class を付与
