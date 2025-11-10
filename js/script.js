@@ -429,7 +429,7 @@ importButton.addEventListener("click", () => {
     setCookie();
     updateRemainingCount();
 
-    alert("状態をインポートしました！");
+    //alert("状態をインポートしました！");
 });
 
 // --- インポートテキストエリア クリア機能 ---
@@ -437,7 +437,7 @@ const clearImportButton = document.getElementById("clearImportButton");
 
 clearImportButton.addEventListener("click", () => {
     importTextarea.value = "";
-    alert("テキストエリアをクリアしました。");
+    //alert("テキストエリアをクリアしました。");
 });
 
 // cookieの追加や削除の関数
