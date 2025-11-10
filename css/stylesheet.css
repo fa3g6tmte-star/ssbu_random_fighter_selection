@@ -158,34 +158,6 @@
   }
   
   .fighterList {
-  display: flex;
-  flex-wrap: wrap;       /* 折り返しを許可 */
-  justify-content: center;
-  gap: 4px;              /* アイコン間の余白 */
-  list-style: none;
-}
-
-/* デフォルト: スマホ用（7キャラ横並び） */
-.fighterBox {
-  flex: 1 1 calc(100% / 7 - 8px); /* 7列 */
-  max-width: 110px;               /* アイコンの最大幅 */
-  min-width: 78px;                /* 小さい画面での最小幅 */
-  height: 110px;
-  text-align: center;
-  padding: 0px 8px 5px 8px;
-  margin: 2px;
-  transition: 0.8s;
-}
-
-/* 横幅が広い場合: 最大9キャラ */
-@media (min-width: 768px) { /* iPadサイズ以上を想定 */
-  .fighterBox {
-    flex: 1 1 calc(100% / 9 - 8px); /* 9列 */
-  }
-}
-  /* 
-  
-  .fighterList {
     margin: 0 auto;
     display: -webkit-box;
     display: -ms-flexbox;
@@ -207,7 +179,6 @@
     -webkit-transition: 0.8s;
     transition: 0.8s;
   }
-  */
   .fighterBox p {
     height: 20%;
     font-size: 11px;
