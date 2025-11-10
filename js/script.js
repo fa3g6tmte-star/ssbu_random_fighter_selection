@@ -453,7 +453,7 @@ importButton.addEventListener("click", async () => {
     setCookie();
     updateRemainingCount();
 
-    alert(`${source === "text" ? "テキスト" : source + ".json"} からインポートしました！`);
+    //alert(`${source === "text" ? "テキスト" : source + ".json"} からインポートしました！`);
 });
 
 // --- インポートテキストエリア クリア機能 ---
