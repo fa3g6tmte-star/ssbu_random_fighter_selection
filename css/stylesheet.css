@@ -58,7 +58,7 @@
 }
 
 .counterContainer button {
-    padding: 10px 32px;   /* ← ボタンを大きく（縦横ともに拡張） */
+    padding: 10px 14px;   /* ← ボタンを大きく（縦横ともに拡張） */
     font-size: 24px;     /* ← 数字を見やすく大きく */
     cursor: pointer;
     border: 1px solid #888;
