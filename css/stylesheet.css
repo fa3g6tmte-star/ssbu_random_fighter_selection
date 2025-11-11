@@ -51,6 +51,11 @@
     margin-left: 20px; /* おまかせボタンとの余白 */
     gap: 4px;
 }
+.counterLabel {
+  font-weight: bold;
+  margin-right: 6px;
+  font-size: 16px;
+}
 
 .counterContainer button {
     padding: 8px 14px;   /* ← ボタンを大きく（縦横ともに拡張） */
