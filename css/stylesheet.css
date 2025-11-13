@@ -196,6 +196,7 @@
 }
   
 .exportImportState {
+  padding-left: 10px; /* 左に余白を追加 */
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -264,10 +265,6 @@
     display: none;
 }
 
-/* ▼ exportImportState 内の要素間隔を少し整える */
-.exportImportState {
-    gap: 10px;
-}
   /* リザルトボックス */
   .result {
     width: 100%;
