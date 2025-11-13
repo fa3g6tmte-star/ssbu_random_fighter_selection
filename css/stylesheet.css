@@ -171,7 +171,7 @@
   /* ボタンとテキストエリアを同じ幅に揃える */
 .exportImportState button,
 .exportImportState textarea {
-    width: 100px;          /* エクスポートボタンに合わせる */
+    width: 120px;          /* エクスポートボタンに合わせる */
     box-sizing: border-box; /* paddingとborderを含めて幅を固定 */
 }
 
