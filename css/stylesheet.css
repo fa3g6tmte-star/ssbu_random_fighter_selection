@@ -171,12 +171,13 @@
   /* ボタンとテキストエリアを同じ幅に揃える */
 .exportImportState button,
 .exportImportState textarea {
-    width: 90px;          /* エクスポートボタンに合わせる */
+    width: 100px;          /* エクスポートボタンに合わせる */
     box-sizing: border-box; /* paddingとborderを含めて幅を固定 */
 }
 
 /* ボタン共通スタイル */
 .exportImportState button {
+    margin: 0;
     border: grey 0.5px solid;
     padding: 2px 8px;
     font-size: 14px;
