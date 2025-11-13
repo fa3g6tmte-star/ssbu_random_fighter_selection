@@ -497,6 +497,66 @@ counterDisplay.addEventListener("input", (e) => {
     updateCounter(e.target.value);
 });
 
+//--------------------------------------------------
+// ▼ チーム編成ランダム機能
+//--------------------------------------------------
+
+// プレイヤー4人
+const players = ["Achilles", "ポリ2", "顔文字", "ショウ"];
+
+// 表示先を作成
+const teamContainer = document.createElement("div");
+teamContainer.id = "teamRandomContainer";
+teamContainer.style.marginTop = "40px";
+teamContainer.style.borderTop = "2px solid #999";
+teamContainer.style.paddingTop = "20px";
+teamContainer.style.textAlign = "center";
+teamContainer.innerHTML = `
+  <h2>チーム編成（ランダム）</h2>
+  <button id="generateTeamButton">チームをランダム編成</button>
+  <div id="teamResult" style="margin-top:15px; font-size:18px; line-height:1.8;"></div>
+`;
+
+// mainタグの一番下に追加
+document.querySelector("main .container").appendChild(teamContainer);
+
+// チーム生成ボタンの処理
+document.getElementById("generateTeamButton").addEventListener("click", () => {
+  const rounds = generateTeamRounds(players, 3);
+  const resultDiv = document.getElementById("teamResult");
+
+  let html = "";
+  rounds.forEach((r, i) => {
+    html += `${i + 1}回戦　${r[0][0]}＆${r[0][1]} VS ${r[1][0]}＆${r[1][1]}<br>`;
+  });
+  resultDiv.innerHTML = html;
+});
+
+// ▼ チーム編成生成関数
+function generateTeamRounds(players, numRounds) {
+  const allRounds = [];
+  const usedCombos = new Set();
+
+  while (allRounds.length < numRounds) {
+    const shuffled = [...players].sort(() => Math.random() - 0.5);
+    const team1 = [shuffled[0], shuffled[1]].sort();
+    const team2 = [shuffled[2], shuffled[3]].sort();
+
+    const key = JSON.stringify([team1, team2].sort());
+    if (!usedCombos.has(key)) {
+      usedCombos.add(key);
+      allRounds.push([team1, team2]);
+    }
+
+    // 念のため、全パターン網羅後は打ち切り
+    if (usedCombos.size >= 3) break;
+  }
+
+  return allRounds;
+}
+
+
+
 // cookieの追加や削除の関数
 const setCookie = () => {
     const valueBanned = JSON.stringify([...bannedFighters]);
