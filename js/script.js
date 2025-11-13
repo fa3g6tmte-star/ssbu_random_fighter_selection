@@ -524,9 +524,9 @@ document.getElementById("generateTeamButton").addEventListener("click", () => {
     row.className = "team-row";
     row.innerHTML = `
       <div class="round-label">${i + 1}回戦</div>
-      <div class="team team-red">${r[0][0]}＆${r[0][1]}</div>
+      <div class="team team-red">${r[0][0]} / ${r[0][1]}</div>
       <div class="vs">VS</div>
-      <div class="team team-blue">${r[1][0]}＆${r[1][1]}</div>
+      <div class="team team-blue">${r[1][0]} / ${r[1][1]}</div>
     `;
     resultDiv.appendChild(row);
   });
