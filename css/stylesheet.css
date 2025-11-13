@@ -183,6 +183,7 @@
     height: 26px;        /* 高さも統一 */
     background-color: white;
     cursor: pointer;
+    white-space: nowrap;
 }
 
 /* テキストエリア */
@@ -216,16 +217,6 @@
   flex-direction: column;
   align-items: center;
   gap: 6px;
-}
-
-/* ボタンの共通スタイル */
-.exportImportState button {
-  border: grey 0.5px solid;
-  padding: 2px 8px;
-  font-size: 14px;
-  height: 26px;
-  background-color: white;
-  cursor: pointer;
 }
 
 /* ▼ プルダウンデザイン改善 */
