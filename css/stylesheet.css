@@ -170,27 +170,46 @@
   }
   
 .exportImportState {
-    display: flex;
-    flex-wrap: wrap; /* 折り返し可にする */
-    justify-content: center;
-    align-items: flex-start;
-    gap: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 10px;
 }
 
+/* インポート／エクスポートを縦並びに */
+.importExportGroup {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+/* テキストエリアとクリアボタンを縦並びに */
 .importArea {
-    display: flex;
-    flex-direction: column; /* 縦並び */
-    align-items: center;    /* 中央揃え */
-    gap: 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+/* ボタンの共通スタイル */
+.exportImportState button {
+  border: grey 0.5px solid;
+  padding: 2px 8px;
+  font-size: 14px;
+  height: 26px;
+  background-color: white;
+  cursor: pointer;
 }
 
 #importTextarea {
-    border: grey 0.5px solid;
-    width: 120px;    /* 少し広げてもOK */
-    height: 24px;
-    font-size: 10px;
-    resize: none;
-    padding: 2px;
+  border: grey 0.5px solid;
+  width: 120px;
+  height: 24px;
+  font-size: 10px;
+  resize: none;
+  padding: 2px;
 }
 
 #clearImportButton {
@@ -217,7 +236,6 @@
     padding: 2px;
 }
 
-/* ▼ プルダウンデザイン改善 */
 /* ▼ プルダウンデザイン改善 */
 #importSource {
     appearance: none; /* ブラウザ標準のスタイルを無効化 */
