@@ -196,7 +196,7 @@
 }
   
 .exportImportState {
-  padding-left: 10px; /* 左に余白を追加 */
+  padding-left: 15px; /* 左に余白を追加 */
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
