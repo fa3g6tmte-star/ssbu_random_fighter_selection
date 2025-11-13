@@ -378,6 +378,92 @@
     width: 100%;
   }
   
+  /* ================================
+   ▼ チーム編成（ランダム）デザイン
+================================ */
+
+.team-random-container {
+  margin: 50px auto;
+  padding: 25px;
+  border: 2px solid #ccc;
+  border-radius: 10px;
+  max-width: 600px;
+  text-align: center;
+  background: #fafafa;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+/* ボタン */
+.team-random-button {
+  padding: 10px 25px;
+  font-size: 18px;
+  border: none;
+  border-radius: 6px;
+  background: linear-gradient(135deg, #4CAF50, #2E8B57);
+  color: white;
+  cursor: pointer;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+  transition: 0.2s;
+}
+.team-random-button:hover {
+  opacity: 0.85;
+  transform: scale(1.03);
+}
+
+/* 結果全体 */
+.team-result {
+  margin-top: 25px;
+  font-size: 22px;
+  line-height: 2;
+}
+
+/* 各行 */
+.team-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 10px;
+}
+
+/* 回戦ラベル */
+.round-label {
+  font-weight: bold;
+  min-width: 70px;
+  text-align: right;
+}
+
+/* チーム共通 */
+.team {
+  min-width: 180px;
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-weight: bold;
+}
+
+/* 赤チーム・青チーム */
+.team-red {
+  color: #fff;
+  background-color: #e74c3c;
+  text-align: right;
+}
+.team-blue {
+  color: #fff;
+  background-color: #3498db;
+  text-align: left;
+}
+
+/* VS中央 */
+.vs {
+  font-weight: bold;
+  font-size: 22px;
+  color: #333;
+  min-width: 40px;
+  text-align: center;
+}
+  
+  
+  
   footer {
     margin: 0 auto;
     position: relative;
