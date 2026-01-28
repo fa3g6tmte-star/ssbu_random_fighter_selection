@@ -271,16 +271,18 @@
     text-align: center;
   }
   
-  /* 結果表示エリアだけ5列にする */
+/* おまかせ結果：必ず5列 */
 .result-list {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr); /* ★ 常に5列 */
+  justify-items: center;
+  gap: 4px;
+  max-width: 520px; /* 100px × 5 + 余白 */
+  margin: 0 auto;
 }
 
 .result-list .fighterBox {
-  flex: 0 0 20%;   /* ★ 5列固定 */
-  max-width: 100px;
+  width: 100px;  /* 見た目固定 */
 }
 
   
