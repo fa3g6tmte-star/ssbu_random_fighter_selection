@@ -274,10 +274,9 @@
 /* おまかせ結果：必ず5列 */
 .result-list {
   display: grid;
-  grid-template-columns: repeat(5, 1fr); /* ★ 常に5列 */
-  justify-items: center;
+  grid-template-columns: repeat(5, 100px); /* ★ 固定幅にする */
+  justify-content: center;                 /* ★ 全体を中央寄せ */
   gap: 4px;
-  max-width: 520px; /* 100px × 5 + 余白 */
   margin: 0 auto;
 }
 
