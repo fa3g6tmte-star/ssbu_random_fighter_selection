@@ -274,11 +274,14 @@
 /* おまかせ結果：必ず5列 */
 .result-list {
   display: grid;
-  grid-template-columns: repeat(5, 100px); /* ★ 固定幅にする */
-  justify-content: center;                 /* ★ 全体を中央寄せ */
+  grid-template-columns: repeat(5, 100px);
+  justify-content: center;
   gap: 4px;
   margin: 0 auto;
+  list-style: none;
+  padding: 0;
 }
+
 
 .result-list .fighterBox {
   width: 100px;
