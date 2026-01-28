@@ -277,11 +277,11 @@
   grid-template-columns: repeat(5, 100px);
   justify-content: center;
   gap: 4px;
+  width: fit-content;
   margin: 0 auto;
   list-style: none;
   padding: 0;
 }
-
 
 .result-list .fighterBox {
   width: 100px;
