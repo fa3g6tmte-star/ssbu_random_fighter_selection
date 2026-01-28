@@ -140,11 +140,11 @@ randomButton.addEventListener("click", () => {
     while (result.firstChild) {
         result.removeChild(result.firstChild);
     }
-    
-        const countSelect = document.getElementById("randomCountSelect");
-        const numSelectedFighters = parseInt(countSelect.value);
+            
+    const countSelect = document.getElementById("randomCountSelect");
+    const numSelectedFighters = parseInt(countSelect.value, 10);
         
-        // 選択状態の値を取得（全てのボタンをチェック）
+    // 選択状態の値を取得（全てのボタンをチェック）
 /*
         for (let i = 0; i < radioButton.length; i++) {
             if (radioButton[i].checked) {
