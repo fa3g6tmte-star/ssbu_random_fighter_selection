@@ -145,12 +145,15 @@ randomButton.addEventListener("click", () => {
         const numSelectedFighters = parseInt(countSelect.value);
         
         // 選択状態の値を取得（全てのボタンをチェック）
+/*
         for (let i = 0; i < radioButton.length; i++) {
             if (radioButton[i].checked) {
                 numSelectedFighters = parseInt(radioButton[i].value);
                 break;
             }
         }
+*/
+        
 
     // もし指定された個数文表示できなかったら
     const union = new Set([...bannedFighters, ...usedFighters]);
