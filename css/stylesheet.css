@@ -271,17 +271,7 @@
     text-align: center;
   }
   
-/* おまかせ結果：必ず5列 
-.result-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, 100px);
-  justify-content: center;
-  gap: 4px;
-  list-style: none;
-  padding: 0;
-  margin: 0 auto;
-}
-*/
+/* おまかせ結果：必ず5列 */
 .result-list {
   display: grid;
   grid-template-columns: repeat(auto-fit, 100px);
@@ -291,6 +281,19 @@
   margin: 0 auto;
   padding: 0;
   list-style: none;
+  .result-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, 100px);
+  gap: 4px;
+
+  max-width: calc(100px * 5 + 4px * 4);
+  margin: 0 auto;
+  padding: 0;
+  list-style: none;
+
+  /* ★ 追加 */
+  place-content: center;
+}
 }
 
   /*
