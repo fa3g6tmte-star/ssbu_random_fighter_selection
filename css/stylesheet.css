@@ -288,7 +288,7 @@
   box-sizing: border-box;
 }
 
-  
+  /*
   .fighterList {
     margin: 0 auto;
     display: -webkit-box;
@@ -301,6 +301,16 @@
         flex-wrap: wrap;
     list-style: none;
   }
+  */
+  
+  /* 一覧キャラ専用（候補一覧） */
+#candidateList.fighterList {
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  list-style: none;
+}
   
   /* キャラアイコンをいれるボックス */
   
