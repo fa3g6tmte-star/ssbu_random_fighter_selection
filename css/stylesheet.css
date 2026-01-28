@@ -271,6 +271,19 @@
     text-align: center;
   }
   
+  /* 結果表示エリアだけ5列にする */
+.result-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.result-list .fighterBox {
+  flex: 0 0 20%;   /* ★ 5列固定 */
+  max-width: 100px;
+}
+
+  
   .fighterList {
     margin: 0 auto;
     display: -webkit-box;
@@ -284,7 +297,8 @@
     list-style: none;
   }
   
-  /* キャラアイコンをいれるボックス 
+  /* キャラアイコンをいれるボックス */
+  
   .fighterBox {
     width: 100px;
     height: 110px;
@@ -293,19 +307,7 @@
     margin: 2px;
     -webkit-transition: 0.8s;
     transition: 0.8s;
-  }*/
-  
-  /* キャラアイコンをいれるボックス */
-  .fighterBox {
-  width: 20%;
-  max-width: 100px;
-  height: 110px;
-  text-align: center;
-  padding: 0px 8px 5px 8px;
-  margin: 2px;
-  box-sizing: border-box;
-  transition: 0.8s;
-}
+  }
   
   .fighterBox p {
     height: 20%;
