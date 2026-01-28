@@ -271,7 +271,7 @@
     text-align: center;
   }
   
-/* おまかせ結果：必ず5列 */
+/* おまかせ結果：必ず5列 
 .result-list {
   display: grid;
   grid-template-columns: repeat(auto-fit, 100px);
@@ -280,6 +280,17 @@
   list-style: none;
   padding: 0;
   margin: 0 auto;
+}
+*/
+.result-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, 100px);
+  gap: 4px;
+  max-width: calc(100px * 5 + 4px * 4); /* 5キャラ分 */
+  justify-content: center;
+  margin: 0 auto;
+  padding: 0;
+  list-style: none;
 }
 
   /*
