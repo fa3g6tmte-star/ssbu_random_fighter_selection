@@ -282,7 +282,10 @@
 }
 
 .result-list .fighterBox {
-  width: 100px;  /* 見た目固定 */
+  width: 100px;
+  padding: 0;
+  margin: 2px;
+  box-sizing: border-box;
 }
 
   
