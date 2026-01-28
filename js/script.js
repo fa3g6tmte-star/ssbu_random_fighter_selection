@@ -496,7 +496,19 @@ clearCounter.addEventListener("click", () => {
 counterDisplay.addEventListener("input", (e) => {
     updateCounter(e.target.value);
 });
-
+// -------------------------------
+// ▼ Miiキャラのみ除外
+// -------------------------------
+const banMiiFighters = () => {
+    for (let i = 0; i < numFighters; i++) {
+        // fighters[i] は画像ファイル名
+        if (fighters[i].startsWith("mii_")) {
+            banIthFighter(i);
+        }
+    }
+    updateRemainingCount();
+    setCookie();
+};
 //--------------------------------------------------
 // ▼ チーム編成ランダム機能
 //--------------------------------------------------
@@ -599,10 +611,12 @@ const allButton = document.getElementById("allButton");
 const unbanButton = document.getElementById("unbanButton");
 const deleteHistoryButton = document.getElementById("deleteHistoryButton");
 const resetButton = document.getElementById("resetButton");
+const miiBanButton = document.getElementById("miiBanButton");
 
 historyCheckbox.addEventListener("click", checkIfUseHistory);
 allButton.addEventListener("click", banAllFighters);
 unbanButton.addEventListener("click", unbanAllFighters);
+miiBanButton.addEventListener("click", banMiiFighters);
 deleteHistoryButton.addEventListener("click", () => {
     deleteHistory();
     updateRemainingCount();
