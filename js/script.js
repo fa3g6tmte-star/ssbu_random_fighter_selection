@@ -516,6 +516,7 @@ const banMiiFighters = () => {
 const dashFighters = new Set([
     "daisy",
     "dark_samus",
+    "dark_pit",
     "simon"
 ]);
 
