@@ -509,6 +509,26 @@ const banMiiFighters = () => {
     updateRemainingCount();
     setCookie();
 };
+
+// -------------------------------
+// ▼ ダッシュファイターのみ除外
+// -------------------------------
+const dashFighters = new Set([
+    "daisy",
+    "dark_samus",
+    "simon"
+]);
+
+const banDashFighters = () => {
+    for (let i = 0; i < numFighters; i++) {
+        if (dashFighters.has(fighters[i])) {
+            banIthFighter(i);
+        }
+    }
+    updateRemainingCount();
+    setCookie();
+};
+
 //--------------------------------------------------
 // ▼ チーム編成ランダム機能
 //--------------------------------------------------
@@ -612,11 +632,14 @@ const unbanButton = document.getElementById("unbanButton");
 const deleteHistoryButton = document.getElementById("deleteHistoryButton");
 const resetButton = document.getElementById("resetButton");
 const miiBanButton = document.getElementById("miiBanButton");
+const dashBanButton = document.getElementById("dashBanButton");
 
 historyCheckbox.addEventListener("click", checkIfUseHistory);
 allButton.addEventListener("click", banAllFighters);
 unbanButton.addEventListener("click", unbanAllFighters);
 miiBanButton.addEventListener("click", banMiiFighters);
+dashBanButton.addEventListener("click", banDashFighters);
+
 deleteHistoryButton.addEventListener("click", () => {
     deleteHistory();
     updateRemainingCount();
