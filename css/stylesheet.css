@@ -222,7 +222,7 @@
 }
 
 /* ▼ プルダウンデザイン改善 */
-#importSource {
+.select-style {
     appearance: none; /* ブラウザ標準のスタイルを無効化 */
     -webkit-appearance: none; /* Safari対応 */
     -moz-appearance: none;
@@ -254,15 +254,13 @@
     background-repeat: no-repeat;
 }
 
-/* ▼ 押した時・フォーカス時 */
-#importSource:focus {
+.select-style:focus {
     outline: none;
     border-color: #555;
     box-shadow: 0 0 4px rgba(85, 85, 255, 0.5);
 }
 
-/* ▼ IE対策 */
-#importSource::-ms-expand {
+.select-style::-ms-expand {
     display: none;
 }
 
